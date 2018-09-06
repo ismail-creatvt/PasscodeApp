@@ -17,6 +17,7 @@ public class PasscodeViewHolder extends RecyclerView.ViewHolder implements View.
     public TextView passcodeName,passcodeTime,passcodeDay,passcodeType;
     private CardView passcodeItem;
     private PasscodeDeleteListener mListener;
+    private PopupWindow popupWindow;
     public PasscodeViewHolder(View view) {
         super(view);
 
@@ -36,7 +37,7 @@ public class PasscodeViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
-        PopupWindow popupWindow=null;
+
         if(v.getId() == R.id.passcode_item){
             View view = LayoutInflater.from(v.getContext()).inflate(R.layout.passcode_popup,null);
 
