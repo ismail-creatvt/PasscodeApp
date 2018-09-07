@@ -8,15 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PasscodeListAdapter extends RecyclerView.Adapter<PasscodeViewHolder> implements PasscodeDeleteListener{
+public class PasscodeListAdapter extends RecyclerView.Adapter<PasscodeViewHolder> implements PasscodeDeleteListener,PopUpListener{
 
     private List<Passcode> mPasscodeList;
     private PasscodeDeleteListener mListener;
+    private List<PopUpListener> mPopUpListener;
     public PasscodeListAdapter(List<Passcode> passcodes){
         mPasscodeList = passcodes;
+        mPopUpListener = new ArrayList<>();
     }
 
     public void setPasscodeList(List<Passcode> passcodeList) {
@@ -31,7 +34,9 @@ public class PasscodeListAdapter extends RecyclerView.Adapter<PasscodeViewHolder
     @Override
     public PasscodeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.passcode_item,parent,false);
-        return new PasscodeViewHolder(view).setListener(this);
+        PasscodeViewHolder passcodeViewHolder = new PasscodeViewHolder(view).setListener(this);
+        mPopUpListener.add(passcodeViewHolder);
+        return passcodeViewHolder;
     }
 
     @Override
@@ -60,5 +65,15 @@ public class PasscodeListAdapter extends RecyclerView.Adapter<PasscodeViewHolder
     @Override
     public void passcodeDeleted() {
         mListener.passcodeDeleted();
+    }
+
+    @Override
+    public boolean onPopUpClose() {
+        for(int i=0;i<mPopUpListener.size();i++){
+            if(mPopUpListener.get(i).onPopUpClose()){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -13,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class PasscodeFragment extends Fragment implements View.OnClickListener,PasscodeDeleteListener {
+public class PasscodeFragment extends Fragment implements View.OnClickListener,PasscodeDeleteListener,PopUpListener {
 
     private View mView;
     private RecyclerView mPasscodeList;
     private CardView mAddNewPasscodeButton;
+    private PopUpListener mPopUpListener;
     private OnPasscodeFragmentInteractionListener mListener;
     private PasscodeListAdapter adapter;
     private PasscodeDatabaseHelper db;
@@ -43,6 +44,7 @@ public class PasscodeFragment extends Fragment implements View.OnClickListener,P
         adapter = new PasscodeListAdapter(db.getPasscodes());
         adapter.setListener(this);
         mPasscodeList.setAdapter(adapter);
+        mPopUpListener = adapter;
         mPasscodeList.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         mAddNewPasscodeButton.setOnClickListener(this);
         return mView;
@@ -61,6 +63,11 @@ public class PasscodeFragment extends Fragment implements View.OnClickListener,P
     public void passcodeDeleted() {
         adapter.setPasscodeList(db.getPasscodes());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onPopUpClose() {
+        return mPopUpListener.onPopUpClose();
     }
 
     public interface OnPasscodeFragmentInteractionListener{
