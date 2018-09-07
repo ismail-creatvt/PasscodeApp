@@ -259,11 +259,19 @@ public class AddPasscodeFragment extends Fragment implements AdapterView.OnItemS
             return;
         }
 
-        if(!isDayChecked){
-            showErrorDialog(R.string.select_day);
-            return;
-        }
+        if(passcodeType.toLowerCase().equals("time bound")) {
 
+            if (!isDayChecked) {
+                showErrorDialog(R.string.select_day);
+                return;
+            }
+
+            if(mStartTimeStamp >= mEndTimeStamp){
+                mEndTime.setError("End Time should be greater than start time");
+                mEndTime.requestFocus();
+                return;
+            }
+        }
         if(!passcode.equals(repasscode)){
             mReEnterPasscodeField.setError("Passcode doesn't match");
             mReEnterPasscodeField.requestFocus();

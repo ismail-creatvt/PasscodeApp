@@ -24,7 +24,6 @@ public class PasscodeActivity extends AppCompatActivity implements PasscodeFragm
 
     private static final int SCREEN_1 = 10011;
     private static final int SCREEN_2 = 10012;
-    private PopUpListener mPopUpListener;
     private int currentScreen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +68,12 @@ public class PasscodeActivity extends AppCompatActivity implements PasscodeFragm
             goToScreen1();
         }
         else if(currentScreen == SCREEN_1){
-            //If pop up is not opened
-            if(!mPopUpListener.onPopUpClose()){
-                finish();
-            }
+            finish();
         }
     }
 
     public void goToScreen1(){
-            PasscodeFragment passcodeFragment = new PasscodeFragment().setListener(this);
-            mPopUpListener = passcodeFragment;
-            changeFragment(passcodeFragment);
+            changeFragment(new PasscodeFragment().setListener(this));
             currentScreen = SCREEN_1;
     }
 

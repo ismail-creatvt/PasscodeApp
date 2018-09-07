@@ -1,6 +1,7 @@
 package com.creatvt.ismail.androidpasscodetask;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +14,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PasscodeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,PopUpListener {
+public class PasscodeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public TextView passcodeName,passcodeTime,passcodeDay,passcodeType;
     private CardView passcodeItem;
-    private PopupWindow mPopupWindow;
+    private AlertDialog mPopupWindow;
     private PasscodeDeleteListener mListener;
     public PasscodeViewHolder(View view) {
         super(view);
@@ -44,8 +45,11 @@ public class PasscodeViewHolder extends RecyclerView.ViewHolder implements View.
             TextView delete = view.findViewById(R.id.delete);
             TextView share = view.findViewById(R.id.share);
 
-            mPopupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            mPopupWindow.showAtLocation(v,Gravity.CENTER,0,0);
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            builder.setView(view);
+            mPopupWindow = builder.create();
+            mPopupWindow.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            mPopupWindow.show();
             edit.setOnClickListener(this);
             delete.setOnClickListener(this);
             share.setOnClickListener(this);
@@ -85,12 +89,5 @@ public class PasscodeViewHolder extends RecyclerView.ViewHolder implements View.
 
     }
 
-    @Override
-    public boolean onPopUpClose() {
-        if(mPopupWindow.isShowing()){
-            mPopupWindow.dismiss();
-            return true;
-        }
-        return false;
-    }
+
 }
